@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car List</title>
+</head>
+<body>
+    Esta es la lista de coches.
+    <ul>
+        {% for car in car_list %}
+            <li>{{ car.title }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
