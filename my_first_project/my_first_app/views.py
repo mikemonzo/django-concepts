@@ -2,7 +2,7 @@
 This module contains view functions for the my_first_app Django application.
 """
 
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 car_listed = [
         {'title': 'Toyota Camry', 'year': 2021},
@@ -10,31 +10,45 @@ car_listed = [
         {'title': 'Ford Escape', 'year': 2019},
 ]
 
-# Create your views here.
-def car_list(request):
+class CarListView(TemplateView):
     """
-    View function to display a list of cars.
+    CarLisView is a Django TemplateView that renders a list of cars.
 
-    Args:
-        request (HttpRequest): The HTTP request object.
+    Attributes:
+        template_name (str): The path to the template used to render the view.
 
-    Returns:
-        HttpResponse: The rendered HTML page displaying the list of cars.
+    Methods:
+        get_context_data(**kwargs):
+            Adds a list of cars to the context data for rendering in the template.
+            Args:
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                dict: The context data with the added car list.
     """
-    context = {'car_list': car_listed}
-    return render(request, 'my_first_app/car_list.html', context)
+    template_name = 'my_first_app/car_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['car_list'] = car_listed
+        return context
 
 
-def car_detail(request, car_id):
+class CarDetailView(TemplateView):
     """
-    View function to display the details of a specific car.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        car_id (int): The ID of the car to be displayed.
-
-    Returns:
-        HttpResponse: The rendered HTML page displaying the car details.
+    CarDetailView is a Django TemplateView that renders the details of a car.
+    Attributes:
+        template_name (str): The path to the template used to render the view.
+    Methods:
+        get_context_data(**kwargs):
+            Retrieves the context data for rendering the template.
+            Args:
+                **kwargs: Arbitrary keyword arguments.
+            Returns:
+                dict: Context data containing the car details.
     """
-    context = {'car': car_listed[car_id]}
-    return render(request, 'my_first_app/car_detail.html', context)
+    template_name = 'my_first_app/car_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = {'car': car_listed[kwargs['id']]}
+        return context
